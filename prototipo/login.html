@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <style>
+        /* ===== Esquema de cores ===== */
+        :root {
+            --branco: #ffffff;
+            --cinza-claro: #f2f2f2;
+            --azul: #006daa;
+            --azul-escuro: #12205d;
+            --preto: #000000;
+        }
+
+        /* ===== Reset básico ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--cinza-claro);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ===== Caixa principal ===== */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .login-box {
+            background: var(--branco);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 40px 50px;
+            width: 320px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            width: 100px;
+            margin-bottom: 30px;
+        }
+
+        /* Campos de entrada */
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Botão de login */
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--azul);
+            color: var(--branco);
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: var(--azul-escuro);
+        }
+
+        /* Link de cadastro */
+        .register-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--azul-escuro);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== HEADER (para consistência futura, mesmo que não usado aqui) ===== */
+        .header {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-header {
+            height: 50px;
+        }
+
+        .menu-button {
+            background-color: var(--azul);
+            color: var(--branco);
+            border: none;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .menu-button:hover {
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+        }
+
+        /* ===== FOOTER (para consistência futura) ===== */
+        .footer {
+            background-color: var(--cinza-claro);
+            color: var(--preto);
+            text-align: center;
+            padding: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="/img/logo_principal.png" alt="Logo do Projeto" class="logo" />
+
+            <!-- Formulário de login -->
+            <form id="form-login">
+                <input type="text" placeholder="Login" class="input-field" required />
+                <input type="password" placeholder="Senha" class="input-field" required />
+                <button type="submit" class="login-button">Login</button>
+            </form>
+
+            <a href="cadastro.html" class="register-link">Cadastrar-se</a>
+        </div>
+    </div>
+
+    <!-- Script para redirecionamento sem erro -->
+    <script>
+        const form = document.getElementById('form-login');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // impede o envio real do formulário
+            window.location.href = 'index_selector.html'; // redireciona para a tela de seleção
+        });
+    </script>
+</body>
+
+</html>

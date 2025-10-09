@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro</title>
+
+    <style>
+        /* ===== Esquema de cores ===== */
+        :root {
+            --branco: #ffffff;
+            --cinza-claro: #f2f2f2;
+            --azul: #006daa;
+            --azul-escuro: #12205d;
+            --preto: #000000;
+        }
+
+        /* ===== Reset básico ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--cinza-claro);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ===== Caixa principal ===== */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .login-box {
+            background: var(--branco);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 40px 50px;
+            width: 350px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        /* Título */
+        .titulo-cadastro {
+            color: var(--azul-escuro);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* Campos de entrada */
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Grupo de botões radio */
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            color: var(--preto);
+        }
+
+        .radio-group label {
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 6px;
+            accent-color: var(--azul);
+        }
+
+        /* Botão de cadastro */
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--azul);
+            color: var(--branco);
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: var(--azul-escuro);
+        }
+
+        /* Link de voltar para login */
+        .register-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--azul-escuro);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Mensagem de sucesso */
+        .mensagem-sucesso {
+            display: none;
+            color: green;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .mensagem-sucesso.mostrar {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="/img/logo_principal.png" alt="Logo do Projeto" class="logo" />
+
+            <h2 class="titulo-cadastro">Cadastro</h2>
+
+            <form id="form-cadastro">
+                <input type="email" placeholder="E-mail universitário" class="input-field" required />
+
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="tipo" value="aluno" required /> Aluno
+                    </label>
+                    <label>
+                        <input type="radio" name="tipo" value="professor" required /> Professor
+                    </label>
+                </div>
+
+                <input type="text" placeholder="Nome completo" class="input-field" required />
+                <input type="password" placeholder="Senha" class="input-field" required />
+
+                <button type="submit" class="login-button">Cadastrar</button>
+            </form>
+
+            <p class="mensagem-sucesso" id="mensagem">✅ Cadastro realizado com sucesso!</p>
+
+            <a href="login.html" class="register-link">Voltar para o login</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('form-cadastro');
+        const mensagem = document.getElementById('mensagem');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // impede recarregamento
+            mensagem.classList.add('mostrar');
+            setTimeout(() => mensagem.classList.remove('mostrar'), 3000); // some após 3s
+            form.reset(); // limpa os campos
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyUpp - Seleção</title>
+
+    <style>
+        /* ===== Esquema de cores ===== */
+        :root {
+            --branco: #ffffff;
+            --cinza-claro: #f2f2f2;
+            --azul: #006daa;
+            --azul-escuro: #12205d;
+            --preto: #000000;
+        }
+
+        /* ===== Reset básico ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--cinza-claro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo-header {
+            height: 50px;
+        }
+
+        /* ===== CONTEÚDO PRINCIPAL ===== */
+        .conteudo-principal {
+            margin-top: 120px;
+            margin-bottom: 80px;
+            text-align: center;
+            padding: 20px;
+            color: var(--azul-escuro);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .conteudo-principal h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        /* Botões centrais */
+        .central-button {
+            background-color: var(--azul);
+            color: var(--branco);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 200px;
+        }
+
+        .central-button:hover {
+            background-color: var(--azul-escuro);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background-color: var(--cinza-claro);
+            color: var(--preto);
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Cabeçalho -->
+    <header class="header">
+        <img src="/img/logo_principal.png" alt="Logo StudyUpp" class="logo-header" />
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="conteudo-principal">
+        <h1>Bem-vindo ao StudyUpp</h1>
+        <p>Escolha o tipo de usuário para continuar:</p>
+
+        <button class="central-button" onclick="window.location.href='inicio_professor.html'">Professor</button>
+        <button class="central-button" onclick="window.location.href='inicio_aluno.html'">Aluno</button>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>© 2025 StudyUpp</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - StudyUpp</title>
+</head>
+<body>
+    <h2>Criar Conta</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>Nome de usuário:</p>
+        {{ form.username }}
+        <p>E-mail institucional:</p>
+        {{ form.email }}
+        <p>Tipo de usuário:</p>
+        {{ form.user_type }}
+        <p>Senha:</p>
+        {{ form.password1 }}
+        <p>Confirmar senha:</p>
+        {{ form.password2 }}
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    {% if form.errors %}
+        <ul style="color: red;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p>Já tem conta? <a href="{% url 'login' %}">Entrar</a></p>
+</body>
+</html>

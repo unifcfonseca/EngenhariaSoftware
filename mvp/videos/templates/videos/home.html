@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>📚 Aulas Disponíveis</h1>
+
+<a href="{% url 'upload_video' %}">+ Nova Aula</a>
+<hr>
+
+{% for video in videos %}
+    <div style="margin-bottom: 20px;">
+        <h2>{{ video.title }}</h2>
+        <p><strong>Matéria:</strong> {{ video.subject }}</p>
+        <p>{{ video.description }}</p>
+        {% if video.thumbnail_url %}
+            <img src="{{ video.thumbnail_url }}" width="200">
+        {% endif %}
+        <p>👀 {{ video.views }} | 👍 {{ video.likes }} | 👎 {{ video.dislikes }}</p>
+        <p><small>Postado por {{ video.uploaded_by.username }} em {{ video.created_at|date:"d/m/Y" }}</small></p>
+        <a href="{{ video.video_url }}" target="_blank">Assistir Aula</a>
+    </div>
+{% empty %}
+    <p>Nenhuma aula disponível.</p>
+{% endfor %}
+{% endblock %}

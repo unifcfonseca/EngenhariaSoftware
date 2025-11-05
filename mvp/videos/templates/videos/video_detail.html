@@ -21,30 +21,28 @@
         margin-top: 15px;
     }
 
-    .meta {
-        color: #666;
-        font-size: 0.9rem;
-        margin-top: 10px;
+    .reaction-buttons button {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: transform 0.2s ease;
     }
 
-    .description {
-        margin-top: 15px;
-        font-size: 1rem;
-        color: #444;
+    .active {
+        color: #006DAA;
+        font-weight: bold;
+        transform: scale(1.2);
     }
 
-    .btn {
-        display: inline-block;
-        margin-top: 20px;
-        background-color: #006DAA;
-        color: white;
-        padding: 8px 14px;
-        border-radius: 8px;
-        text-decoration: none;
+    .reaction-buttons button:hover {
+        transform: scale(1.2);
     }
 
-    .btn:hover {
-        background-color: #004E7D;
+    .count {
+        font-weight: bold;
+        margin-right: 15px;
     }
 </style>
 {% endblock %}
@@ -57,14 +55,53 @@
     {% if video.video_file %}
         <video controls>
             <source src="{{ video.video_file.url }}" type="video/mp4">
-            Seu navegador não suporta a tag de vídeo.
         </video>
     {% endif %}
 
     <p class="description">{{ video.description }}</p>
-    <p class="meta">👀 {{ video.views }} | 👍 {{ video.likes }} | 👎 {{ video.dislikes }}</p>
-    <p class="meta"><small>Postado por {{ video.uploaded_by.username }} em {{ video.created_at|date:"d/m/Y" }}</small></p>
+
+    <div class="reaction-buttons">
+        <span class="count">👍 <span id="like-count">{{ video.likes }}</span></span>
+        <span class="count">👎 <span id="dislike-count">{{ video.dislikes }}</span></span>
+
+        {% if user.is_authenticated %}
+            <button id="like-btn" class="{% if user_reaction == 'like' %}active{% endif %}">👍</button>
+            <button id="dislike-btn" class="{% if user_reaction == 'dislike' %}active{% endif %}">👎</button>
+        {% else %}
+            <p><a href="{% url 'login' %}">Faça login</a> para reagir.</p>
+        {% endif %}
+    </div>
 
     <a href="{% url 'home' %}" class="btn">⬅ Voltar</a>
 </div>
+
+{% if user.is_authenticated %}
+<script>
+function sendReaction(url) {
+    fetch(url, {
+        method: 'POST',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'}
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('like-count').textContent = data.likes;
+        document.getElementById('dislike-count').textContent = data.dislikes;
+
+        // Atualiza destaque
+        const likeBtn = document.getElementById('like-btn');
+        const dislikeBtn = document.getElementById('dislike-btn');
+        if (url.includes('like')) {
+            likeBtn.classList.toggle('active');
+            dislikeBtn.classList.remove('active');
+        } else {
+            dislikeBtn.classList.toggle('active');
+            likeBtn.classList.remove('active');
+        }
+    });
+}
+
+document.getElementById('like-btn').addEventListener('click', () => sendReaction("{% url 'like_video' video.id %}"));
+document.getElementById('dislike-btn').addEventListener('click', () => sendReaction("{% url 'dislike_video' video.id %}"));
+</script>
+{% endif %}
 {% endblock %}

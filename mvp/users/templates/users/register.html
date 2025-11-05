@@ -1,36 +1,66 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro - StudyUpp</title>
-</head>
-<body>
-    <h2>Criar Conta</h2>
-    <form method="post">
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+    .register-container {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h2 {
+        color: #12205D;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+    button {
+        background-color: #006DAA;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background-color: #004E7D;
+    }
+
+    a {
+        display: block;
+        margin-top: 15px;
+        color: #006DAA;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <h2>Cadastro</h2>
+    <form method="POST">
         {% csrf_token %}
-        <p>Nome de usuário:</p>
-        {{ form.username }}
-        <p>E-mail institucional:</p>
-        {{ form.email }}
-        <p>Tipo de usuário:</p>
-        {{ form.user_type }}
-        <p>Senha:</p>
-        {{ form.password1 }}
-        <p>Confirmar senha:</p>
-        {{ form.password2 }}
-        <button type="submit">Cadastrar</button>
+        {{ form.as_p }}
+        <button type="submit">Registrar</button>
     </form>
-
-    {% if form.errors %}
-        <ul style="color: red;">
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <p>Já tem conta? <a href="{% url 'login' %}">Entrar</a></p>
-</body>
-</html>
+    <a href="{% url 'login' %}">Já tem uma conta? Entrar</a>
+</div>
+{% endblock %}

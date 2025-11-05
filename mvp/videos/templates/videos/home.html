@@ -1,24 +1,110 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>📚 Aulas Disponíveis</h1>
+{% block extra_head %}
+<style>
+    .page-title {
+        font-size: 1.8rem;
+        color: #12205D;
+        margin-bottom: 20px;
+    }
 
-<a href="{% url 'upload_video' %}">+ Nova Aula</a>
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .video-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .video-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .video-card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+    }
+
+    .video-info {
+        padding: 15px;
+    }
+
+    .video-info h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #12205D;
+    }
+
+    .subject {
+        background: #006DAA;
+        color: white;
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        margin-top: 8px;
+    }
+
+    .description {
+        font-size: 0.9rem;
+        margin-top: 10px;
+        color: #444;
+    }
+
+    .meta {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 8px;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        background-color: #006DAA;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        background-color: #004E7D;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">📚 Aulas Disponíveis</h1>
+<a href="{% url 'upload_video' %}" class="btn">+ Nova Aula</a>
 <hr>
 
+<div class="video-grid">
 {% for video in videos %}
-    <div style="margin-bottom: 20px;">
-        <h2>{{ video.title }}</h2>
-        <p><strong>Matéria:</strong> {{ video.subject }}</p>
-        <p>{{ video.description }}</p>
-        {% if video.thumbnail_url %}
-            <img src="{{ video.thumbnail_url }}" width="200">
+    <div class="video-card">
+        {% if video.thumbnail %}
+            <img src="{{ video.thumbnail.url }}" alt="Thumbnail de {{ video.title }}">
         {% endif %}
-        <p>👀 {{ video.views }} | 👍 {{ video.likes }} | 👎 {{ video.dislikes }}</p>
-        <p><small>Postado por {{ video.uploaded_by.username }} em {{ video.created_at|date:"d/m/Y" }}</small></p>
-        <a href="{{ video.video_url }}" target="_blank">Assistir Aula</a>
+        <div class="video-info">
+            <h3>{{ video.title }}</h3>
+            <p class="subject">{{ video.subject }}</p>
+            <p class="description">{{ video.description|truncatewords:20 }}</p>
+            <p class="meta">👀 {{ video.views }} | 👍 {{ video.likes }} | 👎 {{ video.dislikes }}</p>
+            <p class="meta"><small>Postado por {{ video.uploaded_by.username }} em {{ video.created_at|date:"d/m/Y" }}</small></p>
+            <a href="{% url 'video_detail' video.id %}" class="btn">Ver detalhes</a>
+        </div>
     </div>
 {% empty %}
     <p>Nenhuma aula disponível.</p>
 {% endfor %}
+</div>
 {% endblock %}

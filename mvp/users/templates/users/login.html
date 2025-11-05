@@ -1,16 +1,66 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - StudyUpp</title>
-</head>
-<body>
-    <h2>Entrar</h2>
-    <form method="post">
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h2 {
+        color: #12205D;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+    button {
+        background-color: #006DAA;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background-color: #004E7D;
+    }
+
+    a {
+        display: block;
+        margin-top: 15px;
+        color: #006DAA;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button type="submit">Entrar</button>
     </form>
-    <p>Não tem conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
-</body>
-</html>
+    <a href="{% url 'register' %}">Criar conta</a>
+</div>
+{% endblock %}

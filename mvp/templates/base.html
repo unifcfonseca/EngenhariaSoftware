@@ -3,8 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>StudyUpp</title>
+    {% block extra_head %}{% endblock %}
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f7fb;
+        }
+
+        /* NAVBAR */
+        header.navbar {
+            background-color: #12205D;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 40px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 24px;
+            font-weight: 500;
+        }
+
+        .navbar nav a:hover {
+            text-decoration: underline;
+        }
+
+        main.container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
+
+<header class="navbar">
+    <div class="logo">StudyUpp</div>
+    <nav>
+        <a href="{% url 'home' %}">Início</a>
+        <a href="{% url 'upload_video' %}">Adicionar Aula</a>
+        <a href="#">Minhas Aulas</a>
+        <a href="{% url 'logout' %}">Sair</a>
+    </nav>
+</header>
+
+<main class="container">
     {% block content %}{% endblock %}
+</main>
+
 </body>
 </html>

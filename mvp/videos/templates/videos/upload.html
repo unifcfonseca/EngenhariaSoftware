@@ -1,8 +1,52 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+<style>
+    h2 {
+        color: #12205D;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    input, textarea, select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    button {
+        background-color: #006DAA;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background-color: #004E7D;
+    }
+</style>
+{% endblock %}
+
+
+
 {% block content %}
 <h1>📤 Adicionar Nova Aula</h1>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Salvar</button>

@@ -129,3 +129,32 @@ def stats_view(request):
     }
 
     return render(request, 'videos/stats.html', context)
+
+
+@login_required
+def video_stats(request, video_id):
+    video = get_object_or_404(Video, id=video_id)
+
+    # Permite acesso apenas ao professor dono do vídeo
+    if video.uploaded_by != request.user:
+        return HttpResponseForbidden("Você não tem permissão para visualizar as estatísticas deste vídeo.")
+
+    total_views = video.views
+    likes = video.likes
+    dislikes = video.dislikes
+    total_reactions = likes + dislikes
+
+    # Cálculo das métricas
+    engagement_rate = (total_reactions / total_views * 100) if total_views > 0 else 0
+    like_ratio = (likes / total_reactions * 100) if total_reactions > 0 else 0
+
+    context = {
+        'video': video,
+        'views': total_views,
+        'likes': likes,
+        'dislikes': dislikes,
+        'engagement_rate': round(engagement_rate, 1),
+        'like_ratio': round(like_ratio, 1),
+    }
+
+    return render(request, 'videos/video_stats.html', context)

@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:video_id>/like/', views.like_video, name='like_video'),
     path('<int:video_id>/dislike/', views.dislike_video, name='dislike_video'),
     path('delete/<int:video_id>/', views.delete_video, name='delete_video'),
-    path('estatisticas/', views.stats_view, name='stats'),  # 🆕 nova rota
+    path('estatisticas/', views.stats_view, name='stats'),  
+    path('<int:video_id>/stats/', views.video_stats, name='video_stats'),
 ]

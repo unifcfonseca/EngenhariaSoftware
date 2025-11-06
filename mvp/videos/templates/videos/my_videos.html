@@ -138,7 +138,7 @@
             <div class="btn-group">
               <a href="{% url 'video_detail' video.id %}" class="btn btn-primary">Assistir</a>
               <a href="{% url 'upload_video' %}?edit={{ video.id }}" class="btn btn-secondary">Editar</a>
-              <a href="{% url 'home' %}?stats={{ video.id }}" class="btn btn-info">Estatísticas</a>
+              <a href="{% url 'video_stats' video.id %}" class="btn btn-info">Estatísticas</a>
               <button class="btn btn-danger" onclick="confirmDelete('{{ video.id }}', '{{ video.title }}')">Excluir</button>
             </div>
           </div>
@@ -184,5 +184,4 @@ function confirmDelete(videoId) {
     });
 }
 </script>
-
 {% endblock %}

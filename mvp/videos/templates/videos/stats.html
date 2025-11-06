@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    h2 { color: #12205D; margin-bottom: 20px; }
+    .stats-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+    .stats-summary {
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .stat-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 180px;
+    }
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #006DAA;
+    }
+    canvas {
+        max-width: 600px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>📊 Estatísticas das Suas Aulas</h2>
+
+<div class="stats-container">
+    <div class="stats-summary">
+        <div class="stat-card">
+            <p>Total de Vídeos</p>
+            <div class="stat-value">{{ total_videos }}</div>
+        </div>
+        <div class="stat-card">
+            <p>Visualizações</p>
+            <div class="stat-value">{{ total_views }}</div>
+        </div>
+        <div class="stat-card">
+            <p>Likes</p>
+            <div class="stat-value">{{ total_likes }}</div>
+        </div>
+        <div class="stat-card">
+            <p>Dislikes</p>
+            <div class="stat-value">{{ total_dislikes }}</div>
+        </div>
+    </div>
+
+    <h3>Top 5 Vídeos Mais Vistos</h3>
+    <canvas id="viewsChart"></canvas>
+</div>
+
+<script>
+const ctx = document.getElementById('viewsChart');
+const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{% for v in top_videos %}'{{ v.title }}',{% endfor %}],
+        datasets: [{
+            label: 'Visualizações',
+            data: [{% for v in top_videos %}{{ v.views }},{% endfor %}],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+{% endblock %}

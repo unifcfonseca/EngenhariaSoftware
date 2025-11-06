@@ -11,7 +11,6 @@
             background-color: #f5f7fb;
         }
 
-        /* NAVBAR */
         header.navbar {
             background-color: #12205D;
             color: white;
@@ -57,7 +56,8 @@
         <a href="{% url 'home' %}">Início</a>
         <a href="{% url 'upload_video' %}">Adicionar Aula</a>
         {% if request.user.user_type == 'professor' %}
-        <a href="{% url 'my_videos' %}" class="btn btn-outline-primary">Minhas Aulas</a>
+        <a href="{% url 'my_videos' %}">Minhas Aulas</a>
+        <a href="{% url 'stats' %}">Estatísticas</a> <!-- 🆕 link -->
         {% endif %}
         <a href="{% url 'logout' %}">Sair</a>
     </nav>

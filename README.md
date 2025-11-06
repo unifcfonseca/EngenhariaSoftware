@@ -54,12 +54,6 @@ Com o ambiente virtual ativo, instale os pacotes do projeto:
 pip install -r requirements.txt
 ```
 
-Se o arquivo `requirements.txt` ainda não existir, gere-o com:
-
-```bash
-pip freeze > requirements.txt
-```
-
 ---
 
 ### 4️⃣ Crie o banco de dados e aplique as migrações
@@ -67,16 +61,6 @@ pip freeze > requirements.txt
 ```bash
 python manage.py makemigrations
 python manage.py migrate
-```
-
----
-
-### 5️⃣ Crie um superusuário (opcional)
-
-Para acessar o painel administrativo do Django:
-
-```bash
-python manage.py createsuperuser
 ```
 
 ---
@@ -92,39 +76,5 @@ O servidor estará disponível em:
 
 ---
 
-## 👥 Funcionalidades Atuais
-
-- Sistema de **cadastro** e **login** de usuários (alunos e professores);
-- Validação de e-mail institucional no registro;
-- Páginas HTML simples via **Django Template Language**;
-- Banco de dados **SQLite3** integrado automaticamente.
-
----
-
-## 🧩 Próximos Passos
-
-- Implementar upload e gerenciamento de videoaulas;
-- Criar tela de pesquisa e filtros por disciplina e instituição;
-- Adicionar módulo de estatísticas e visualizações.
-
----
-
-## 🛠️ Comandos Úteis
-
-```bash
-# Ativar ambiente virtual
-source .venv/bin/activate
-
-# Executar servidor
-python manage.py runserver
-
-# Aplicar migrações
-python manage.py migrate
-
-# Criar superusuário
-python manage.py createsuperuser
-```
-
----
 
 📘 **Desenvolvido para a disciplina de Engenharia de Software — FEI**

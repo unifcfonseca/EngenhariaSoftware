@@ -8,7 +8,7 @@
         padding: 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         max-width: 800px;
-        margin: 0 auto;
+        margin: 30px auto;
     }
 
     h1 {
@@ -44,6 +44,35 @@
         font-weight: bold;
         margin-right: 15px;
     }
+
+    .action-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-back {
+        background-color: #e9ecef;
+        color: #333;
+    }
+
+    .btn-danger {
+        background-color: #f8d7da;
+        color: #b02a37;
+    }
+
+    .btn-danger:hover {
+        background-color: #f1b0b7;
+    }
 </style>
 {% endblock %}
 
@@ -72,7 +101,15 @@
         {% endif %}
     </div>
 
-    <a href="{% url 'home' %}" class="btn">⬅ Voltar</a>
+    <div class="action-buttons">
+        <a href="{% url 'home' %}" class="btn btn-back">⬅ Voltar</a>
+
+        {% if user == video.uploaded_by %}
+        <button class="btn btn-danger" onclick="confirmDelete('{{ video.id }}')">
+            🗑️ Excluir
+        </button>
+        {% endif %}
+    </div>
 </div>
 
 {% if user.is_authenticated %}
@@ -87,7 +124,6 @@ function sendReaction(url) {
         document.getElementById('like-count').textContent = data.likes;
         document.getElementById('dislike-count').textContent = data.dislikes;
 
-        // Atualiza destaque
         const likeBtn = document.getElementById('like-btn');
         const dislikeBtn = document.getElementById('dislike-btn');
         if (url.includes('like')) {
@@ -102,6 +138,39 @@ function sendReaction(url) {
 
 document.getElementById('like-btn').addEventListener('click', () => sendReaction("{% url 'like_video' video.id %}"));
 document.getElementById('dislike-btn').addEventListener('click', () => sendReaction("{% url 'dislike_video' video.id %}"));
+</script>
+
+<script>
+function getCSRFToken() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : "";
+}
+
+function confirmDelete(videoId) {
+    if (!confirm("Tem certeza que deseja excluir esta aula?")) return;
+
+    fetch("{% url 'delete_video' 0 %}".replace("0", videoId), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
+        },
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erro na requisição");
+        return res.json();
+    })
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            window.location.href = "{% url 'my_videos' %}";
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Ocorreu um erro ao tentar excluir o vídeo.");
+    });
+}
 </script>
 {% endif %}
 {% endblock %}

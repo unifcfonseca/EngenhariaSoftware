@@ -1,18 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from .models import Video, VideoReaction
 from .forms import VideoForm
 
 
-# ✅ Agora apenas usuários logados podem ver a home
 @login_required
 def home(request):
     videos = Video.objects.all().order_by('-created_at')
     return render(request, 'videos/home.html', {'videos': videos})
 
 
-# ✅ Protege também a página de detalhes
 @login_required
 def video_detail(request, video_id):
     video = get_object_or_404(Video, id=video_id)
@@ -91,3 +89,22 @@ def my_videos(request):
 
     videos = Video.objects.filter(uploaded_by=request.user).order_by('-created_at')
     return render(request, 'videos/my_videos.html', {'videos': videos})
+
+
+@login_required
+def delete_video(request, video_id):
+    """
+    Deleta um vídeo se o usuário for o dono (uploaded_by).
+    Requer método DELETE ou POST.
+    """
+    video = get_object_or_404(Video, id=video_id)
+
+    # Garante que só o dono possa deletar
+    if video.uploaded_by != request.user:
+        return HttpResponseForbidden("Você não tem permissão para excluir este vídeo.")
+
+    if request.method in ["DELETE", "POST"]:
+        video.delete()
+        return JsonResponse({"success": True, "message": "Vídeo excluído com sucesso!"})
+    
+    return JsonResponse({"success": False, "message": "Método inválido."}, status=400)

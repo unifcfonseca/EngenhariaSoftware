@@ -64,10 +64,6 @@
         margin-bottom: 12px;
     }
 
-    .meta i {
-        margin-right: 4px;
-    }
-
     .btn-group {
         display: flex;
         flex-wrap: wrap;
@@ -84,17 +80,9 @@
         cursor: pointer;
     }
 
-    .btn i {
-        margin-right: 4px;
-    }
-
     .btn-primary {
         background-color: #006DAA;
         color: #fff;
-    }
-
-    .btn-primary:hover {
-        background-color: #004E7D;
     }
 
     .btn-secondary {
@@ -102,17 +90,9 @@
         color: #333;
     }
 
-    .btn-secondary:hover {
-        background-color: #d7d7d7;
-    }
-
     .btn-info {
         background-color: #DCEFFF;
         color: #006DAA;
-    }
-
-    .btn-info:hover {
-        background-color: #BCE0FF;
     }
 
     .btn-danger {
@@ -125,9 +105,9 @@
     }
 
     .no-videos {
-        color: #666;
-        margin-top: 20px;
         text-align: center;
+        color: #777;
+        margin-top: 30px;
     }
 </style>
 {% endblock %}
@@ -150,18 +130,16 @@
             <p>{{ video.description|truncatewords:25 }}</p>
 
             <div class="meta">
-              <span><i class="bi bi-eye"></i> {{ video.views }} visualizaç{{ video.views|pluralize:"ão,ões" }}</span> &nbsp;•&nbsp;
-              <span><i class="bi bi-hand-thumbs-up"></i> {{ video.likes }} likes</span> &nbsp;•&nbsp;
-              <span><i class="bi bi-hand-thumbs-down"></i> {{ video.dislikes }} dislikes</span>
+              👁️ {{ video.views }} &nbsp;|&nbsp;
+              👍 {{ video.likes }} &nbsp;|&nbsp;
+              👎 {{ video.dislikes }}
             </div>
 
             <div class="btn-group">
-              <a href="{% url 'video_detail' video.id %}" class="btn btn-primary"><i class="bi bi-play-circle"></i> Assistir</a>
-              <a href="{% url 'upload_video' %}?edit={{ video.id }}" class="btn btn-secondary"><i class="bi bi-pencil"></i> Editar</a>
-              <a href="{% url 'home' %}?stats={{ video.id }}" class="btn btn-info"><i class="bi bi-bar-chart"></i> Estatísticas</a>
-              <button class="btn btn-danger" onclick="confirmDelete('{{ video.id }}', '{{ video.title }}')">
-                <i class="bi bi-trash"></i> Excluir
-              </button>
+              <a href="{% url 'video_detail' video.id %}" class="btn btn-primary">Assistir</a>
+              <a href="{% url 'upload_video' %}?edit={{ video.id }}" class="btn btn-secondary">Editar</a>
+              <a href="{% url 'home' %}?stats={{ video.id }}" class="btn btn-info">Estatísticas</a>
+              <button class="btn btn-danger" onclick="confirmDelete('{{ video.id }}', '{{ video.title }}')">Excluir</button>
             </div>
           </div>
         </div>
@@ -173,10 +151,38 @@
 </div>
 
 <script>
-  function confirmDelete(videoId, title) {
-    if (confirm(`Tem certeza que deseja excluir a aula "${title}"?`)) {
-      window.location.href = `/videos/${videoId}/delete/`;
-    }
-  }
+function getCSRFToken() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? match[1] : "";
+}
+
+function confirmDelete(videoId) {
+    if (!confirm("Tem certeza que deseja excluir esta aula?")) return;
+
+    fetch("{% url 'delete_video' 0 %}".replace("0", videoId), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
+        },
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erro na requisição");
+        return res.json();
+    })
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            // Remove visualmente da página
+            const videoCard = document.querySelector(`[onclick="confirmDelete('${videoId}')"]`)?.closest(".video-card");
+            if (videoCard) videoCard.remove();
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Ocorreu um erro ao tentar excluir o vídeo.");
+    });
+}
 </script>
+
 {% endblock %}

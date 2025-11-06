@@ -158,3 +158,39 @@ def video_stats(request, video_id):
     }
 
     return render(request, 'videos/video_stats.html', context)
+
+
+@login_required
+def upload_video(request):
+    edit_id = request.GET.get("edit")
+
+    # Se for edição
+    if edit_id:
+        video = get_object_or_404(Video, id=edit_id, uploaded_by=request.user)
+
+        if request.method == "POST":
+            form = VideoForm(request.POST, request.FILES, instance=video)
+            if form.is_valid():
+                form.save()
+                return redirect("my_videos")
+        else:
+            form = VideoForm(instance=video)
+
+        return render(request, "videos/upload.html", {
+            "form": form,
+            "is_edit": True,
+            "video": video,
+        })
+
+    # Se for upload novo
+    if request.method == "POST":
+        form = VideoForm(request.POST, request.FILES)
+        if form.is_valid():
+            video = form.save(commit=False)
+            video.uploaded_by = request.user
+            video.save()
+            return redirect("my_videos")
+    else:
+        form = VideoForm()
+
+    return render(request, "videos/upload.html", {"form": form, "is_edit": False})

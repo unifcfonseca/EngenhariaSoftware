@@ -43,13 +43,19 @@
 {% endblock %}
 
 
-
 {% block content %}
-<h1>📤 Adicionar Nova Aula</h1>
-<form method="POST" enctype="multipart/form-data">
+<div class="container mt-4" style="max-width: 600px;">
+  <h2 class="mb-4" style="color: #12205D;">
+    {% if is_edit %}Editar Aula{% else %}Adicionar Nova Aula{% endif %}
+  </h2>
+
+  <form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Salvar</button>
-</form>
-<a href="{% url 'home' %}">Voltar</a>
+
+    <button type="submit" class="btn btn-primary w-100 mt-3">
+      {% if is_edit %}Salvar Alterações{% else %}Enviar Aula{% endif %}
+    </button>
+  </form>
+</div>
 {% endblock %}

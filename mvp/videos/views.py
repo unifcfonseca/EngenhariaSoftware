@@ -78,3 +78,16 @@ def upload_video(request):
     else:
         form = VideoForm()
     return render(request, 'videos/upload.html', {'form': form})
+
+
+@login_required
+def my_videos(request):
+    """Exibe apenas os vídeos enviados pelo professor autenticado."""
+    # Permite acesso apenas a professores
+    if request.user.user_type != 'professor':
+        return render(request, 'videos/erro_acesso.html', {
+            'mensagem': 'Apenas professores podem acessar esta página.'
+        })
+
+    videos = Video.objects.filter(uploaded_by=request.user).order_by('-created_at')
+    return render(request, 'videos/my_videos.html', {'videos': videos})

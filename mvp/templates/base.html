@@ -56,7 +56,9 @@
     <nav>
         <a href="{% url 'home' %}">Início</a>
         <a href="{% url 'upload_video' %}">Adicionar Aula</a>
-        <a href="#">Minhas Aulas</a>
+        {% if request.user.user_type == 'professor' %}
+        <a href="{% url 'my_videos' %}" class="btn btn-outline-primary">Minhas Aulas</a>
+        {% endif %}
         <a href="{% url 'logout' %}">Sair</a>
     </nav>
 </header>

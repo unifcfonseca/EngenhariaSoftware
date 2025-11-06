@@ -8,6 +8,36 @@
         margin-bottom: 20px;
     }
 
+    .filters-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .filters-bar input[type="text"],
+    .filters-bar select {
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.9rem;
+    }
+
+    .filters-bar button {
+        padding: 8px 14px;
+        background-color: #006DAA;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .filters-bar button:hover {
+        background-color: #004E7D;
+    }
+
     .video-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -80,12 +110,61 @@
     .btn:hover {
         background-color: #004E7D;
     }
+
+    .pagination {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .pagination a, .pagination span {
+        display: inline-block;
+        margin: 0 4px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        color: #12205D;
+        text-decoration: none;
+    }
+
+    .pagination .current {
+        background-color: #006DAA;
+        color: white;
+        border-color: #006DAA;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <h1 class="page-title">📚 Aulas Disponíveis</h1>
 <hr>
+
+<form method="get" class="filters-bar">
+    <input type="text" name="q" placeholder="Buscar por nome, matéria, professor ou universidade..." value="{{ query }}">
+    
+    <select name="filter">
+        <option value="">Filtrar por...</option>
+        {% for s in subjects %}
+            <option value="{{ s }}" {% if s == selected_filter %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+        {% for u in universities %}
+            <option value="{{ u }}" {% if u == selected_filter %}selected{% endif %}>{{ u }}</option>
+        {% endfor %}
+        {% for p in professors %}
+            <option value="{{ p }}" {% if p == selected_filter %}selected{% endif %}>{{ p }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="sort">
+        <option value="date" {% if sort_option == 'date' %}selected{% endif %}>Data</option>
+        <option value="title" {% if sort_option == 'title' %}selected{% endif %}>Título</option>
+        <option value="views" {% if sort_option == 'views' %}selected{% endif %}>Visualizações</option>
+        <option value="likes" {% if sort_option == 'likes' %}selected{% endif %}>Likes</option>
+    </select>
+
+    <button type="submit">Aplicar</button>
+</form>
+
+<p><strong>{{ page_obj.paginator.count }}</strong> aulas encontradas</p>
 
 <div class="video-grid">
 {% for video in videos %}
@@ -105,5 +184,15 @@
 {% empty %}
     <p>Nenhuma aula disponível.</p>
 {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&filter={{ selected_filter }}&sort={{ sort_option }}">Anterior</a>
+    {% endif %}
+    <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ query }}&filter={{ selected_filter }}&sort={{ sort_option }}">Próxima</a>
+    {% endif %}
 </div>
 {% endblock %}

@@ -5,20 +5,22 @@ from .models import Video, VideoReaction
 from .forms import VideoForm
 
 
+# ✅ Agora apenas usuários logados podem ver a home
+@login_required
 def home(request):
     videos = Video.objects.all().order_by('-created_at')
     return render(request, 'videos/home.html', {'videos': videos})
 
 
+# ✅ Protege também a página de detalhes
+@login_required
 def video_detail(request, video_id):
     video = get_object_or_404(Video, id=video_id)
     video.views += 1
     video.save(update_fields=['views'])
 
     # Verifica se o usuário já reagiu
-    user_reaction = None
-    if request.user.is_authenticated:
-        user_reaction = VideoReaction.objects.filter(user=request.user, video=video).first()
+    user_reaction = VideoReaction.objects.filter(user=request.user, video=video).first()
 
     return render(request, 'videos/video_detail.html', {
         'video': video,
@@ -32,11 +34,9 @@ def like_video(request, video_id):
     reaction, created = VideoReaction.objects.get_or_create(user=request.user, video=video)
 
     if not created and reaction.reaction == 'like':
-        # Já curtiu → remove like
         reaction.delete()
         video.likes -= 1
     else:
-        # Mudou de dislike → like
         if reaction.reaction == 'dislike':
             video.dislikes -= 1
         reaction.reaction = 'like'
@@ -53,11 +53,9 @@ def dislike_video(request, video_id):
     reaction, created = VideoReaction.objects.get_or_create(user=request.user, video=video)
 
     if not created and reaction.reaction == 'dislike':
-        # Já deu dislike → remove
         reaction.delete()
         video.dislikes -= 1
     else:
-        # Mudou de like → dislike
         if reaction.reaction == 'like':
             video.likes -= 1
         reaction.reaction = 'dislike'

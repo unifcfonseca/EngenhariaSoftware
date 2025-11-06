@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from django.urls import reverse
 
 
 def register(request):
@@ -27,15 +28,15 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Bem-vindo, {username}!")
-                return redirect('register')
+                # Redireciona para a página inicial após login
+                return redirect('/')
         messages.error(request, "Usuário ou senha inválidos.")
     else:
         form = AuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
 
+
 def user_logout(request):
     logout(request)
+    messages.info(request, "Você saiu da sua conta.")
     return redirect('login')
-
-
-

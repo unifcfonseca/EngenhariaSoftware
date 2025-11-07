@@ -7,8 +7,12 @@ class Video(models.Model):
     title = models.CharField(max_length=200)
     subject = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
+    thumbnail_url = models.URLField("Link da miniatura (opcional)", blank=True, null=True)
     video_file = models.FileField(upload_to='videos/', blank=True, null=True)
+    video_url = models.URLField("Link do vídeo (opcional)", blank=True, null=True)
+    
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
@@ -32,7 +36,7 @@ class VideoReaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'video')  # Impede múltiplas reações no mesmo vídeo
+        unique_together = ('user', 'video')  
 
     def __str__(self):
         return f"{self.user.username} - {self.video.title} ({self.reaction})"

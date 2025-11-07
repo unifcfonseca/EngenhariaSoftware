@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ativação de Conta</title>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f5f7fb;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 40px auto;
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            h2 {
+                color: #12205D;
+                margin-bottom: 20px;
+            }
+            a.button {
+                display: inline-block;
+                padding: 12px 20px;
+                background-color: #006DAA;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 6px;
+                font-weight: bold;
+            }
+            a.button:hover {
+                background-color: #004E7D;
+            }
+            p {
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <h2>Olá {{ user.username }}!</h2>
+
+        <p>Obrigado por se cadastrar na nossa plataforma.</p>
+
+        <p>Antes de começar a usar sua conta, precisamos confirmar que este e-mail realmente pertence a você.</p>
+
+        <p>Clique no botão abaixo para ativar sua conta:</p>
+
+        <p style="text-align:center; margin: 25px 0;">
+            <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}" class="button">
+                Ativar Conta
+            </a>
+        </p>
+
+        <p>Se o botão acima não funcionar, copie e cole o link abaixo no seu navegador:</p>
+
+        <p style="word-break: break-all;">
+            http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+        </p>
+
+        <p>Se você não solicitou este cadastro, ignore este e-mail.</p>
+
+        <p style="margin-top: 30px; font-size: 0.9em; color: #777;">
+            — Equipe da Plataforma
+        </p>
+    </div>
+    </body>
+</html>

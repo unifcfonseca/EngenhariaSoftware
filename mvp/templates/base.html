@@ -54,10 +54,10 @@
     <div class="logo">StudyUpp</div>
     <nav>
         <a href="{% url 'home' %}">Início</a>
-        <a href="{% url 'upload_video' %}">Adicionar Aula</a>
         {% if request.user.user_type == 'professor' %}
+        <a href="{% url 'upload_video' %}">Adicionar Aula</a>
         <a href="{% url 'my_videos' %}">Minhas Aulas</a>
-        <a href="{% url 'stats' %}">Estatísticas</a> <!-- 🆕 link -->
+        <a href="{% url 'stats' %}">Estatísticas</a> 
         {% endif %}
         <a href="{% url 'logout' %}">Sair</a>
     </nav>

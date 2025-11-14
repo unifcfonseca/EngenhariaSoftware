@@ -15,10 +15,34 @@
         color: #12205D;
     }
 
-    video {
+    video, iframe {
         width: 100%;
         border-radius: 10px;
         margin-top: 15px;
+    }
+
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    .video-wrapper iframe,
+    .video-wrapper video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .thumbnail {
+        width: 40%;
+        border-radius: 10px;
+        margin-top: 10px;
     }
 
     .reaction-buttons button {
@@ -80,11 +104,22 @@
 <div class="video-container">
     <h1>{{ video.title }}</h1>
     <p><strong>Matéria:</strong> {{ video.subject }}</p>
-
     {% if video.video_file %}
-        <video controls>
-            <source src="{{ video.video_file.url }}" type="video/mp4">
-        </video>
+    <video controls>
+        <source src="{{ video.video_file.url }}" type="video/mp4">
+    </video>
+    {% elif video.video_url %}
+        <div class="video-wrapper">
+        {% with video.video_url|cut:"https://www.youtube.com/watch?v="|cut:"https://youtu.be/" as yt_id %}
+            <iframe
+            src="https://www.youtube.com/embed/{{ yt_id }}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            ></iframe>
+        {% endwith %}
+        </div>
     {% endif %}
 
     <p class="description">{{ video.description }}</p>
@@ -93,12 +128,9 @@
         <span class="count">👍 <span id="like-count">{{ video.likes }}</span></span>
         <span class="count">👎 <span id="dislike-count">{{ video.dislikes }}</span></span>
 
-        {% if user.is_authenticated %}
-            <button id="like-btn" class="{% if user_reaction == 'like' %}active{% endif %}">👍</button>
-            <button id="dislike-btn" class="{% if user_reaction == 'dislike' %}active{% endif %}">👎</button>
-        {% else %}
-            <p><a href="{% url 'login' %}">Faça login</a> para reagir.</p>
-        {% endif %}
+        <button id="like-btn" class="{% if user_reaction == 'like' %}active{% endif %}">👍</button>
+        <button id="dislike-btn" class="{% if user_reaction == 'dislike' %}active{% endif %}">👎</button>
+
     </div>
 
     <div class="action-buttons">

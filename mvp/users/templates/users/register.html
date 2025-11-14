@@ -5,7 +5,37 @@
     .register-container {
         max-width: 400px;
         margin: 0 auto;
+        text-align: left;
+    }
+    .center {
         text-align: center;
+    }
+    form p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    form p label {
+        width: 120px;
+        text-align: center;
+        margin: 0;
+        font-weight: 500;
+    }
+    form p input,
+    form p select {
+        flex: 1;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+    form p .text-danger {
+        width: 100%;
+        color: red;
+        font-size: 0.85rem;
+        margin-top: 3px;
+        display: block;
     }
 
     h2 {
@@ -55,12 +85,16 @@
 
 {% block content %}
 <div class="register-container">
-    <h2>Cadastro</h2>
+    <div class="center">
+        <h2>Cadastro</h2>
+    </div>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Registrar</button>
     </form>
-    <a href="{% url 'login' %}">Já tem uma conta? Entrar</a>
+    <div class="center">
+        <a href="{% url 'login' %}">Já tem uma conta? Entrar</a>
+    </div>
 </div>
 {% endblock %}

@@ -140,7 +140,7 @@
 
 <form method="get" class="filters-bar">
     <input type="text" name="q" placeholder="Buscar por nome, matéria, professor ou universidade..." value="{{ query }}">
-    
+
     <select name="filter">
         <option value="">Filtrar por...</option>
         {% for s in subjects %}
@@ -170,7 +170,9 @@
 {% for video in videos %}
     <div class="video-card">
         {% if video.thumbnail %}
-            <img src="{{ video.thumbnail.url }}" alt="Thumbnail de {{ video.title }}">
+            <img src="{{ video.thumbnail.url }}" alt="Thumbnail de {{ video.title }}" class="thumbnail">
+        {% elif video.thumbnail_url %}
+            <img src="{{ video.thumbnail_url }}" alt="Thumbnail de {{ video.title }}" class="thumbnail">
         {% endif %}
         <div class="video-info">
             <h3>{{ video.title }}</h3>

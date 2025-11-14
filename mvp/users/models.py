@@ -6,7 +6,9 @@ class User(AbstractUser):
         ('aluno', 'Aluno'),
         ('professor', 'Professor'),
     ]
-    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='aluno')
+    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='aluno', verbose_name='Tipo de usuário')
+
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.username} ({self.user_type})"

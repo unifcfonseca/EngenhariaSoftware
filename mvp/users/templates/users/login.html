@@ -5,7 +5,30 @@
     .login-container {
         max-width: 400px;
         margin: 0 auto;
+        text-align: left;
+    }
+    .center {
         text-align: center;
+    }
+    form p {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    form p label {
+        width: 120px;
+        text-align: center;
+        margin: 0;
+        font-weight: 500;
+    }
+    form p input,
+    form p select {
+        flex: 1;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
     }
 
     h2 {
@@ -55,12 +78,16 @@
 
 {% block content %}
 <div class="login-container">
-    <h2>Login</h2>
+    <div class="center">
+        <h2>Login</h2>
+    </div>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Entrar</button>
     </form>
-    <a href="{% url 'register' %}">Criar conta</a>
+    <div class="center">
+        <a href="{% url 'register' %}">Criar conta</a>
+    </div>
 </div>
 {% endblock %}
